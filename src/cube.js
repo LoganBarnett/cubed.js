@@ -41,16 +41,24 @@ define(['lodash'], function(_) {
     ]
   };
 
+  var getCubeData = function(grid, coords) {
+    var yzGrid = grid[coords.x];
+    if(!yzGrid) return null;
+    var zGrid = yzGrid[coords.y];
+    if(!zGrid) return null;
+    return zGrid[coords.z];
+  };
+
   var generate = function(grid, coords, cubeSize) {
     var meshData = {renderMesh: []};
 
     var neighbors = {};
-    neighbors.down  = grid[coords.x][ coords.y - 1][coords.z];
-    neighbors.up    = grid[coords.x][coords.y + 1][coords.z];
-    neighbors.right = grid[coords.x + 1][coords.y][coords.z];
-    neighbors.left  = grid[coords.x - 1][coords.y][coords.z];
-    neighbors.front = grid[coords.x][coords.y][coords.z + 1];
-    neighbors.back  = grid[coords.x][coords.y][coords.z - 1];
+    neighbors.down  = getCubeData(grid, {x: coords.x, y: coords.y - 1, z: coords.z});
+    neighbors.up    = getCubeData(grid, {x: coords.x, y: coords.y + 1, z: coords.z});
+    neighbors.right = getCubeData(grid, {x: coords.x + 1, y: coords.y, z: coords.z});
+    neighbors.left  = getCubeData(grid, {x: coords.x - 1, y: coords.y, z: coords.z});
+    neighbors.front = getCubeData(grid, {x: coords.x, y: coords.y, z: coords.z + 1});
+    neighbors.back  = getCubeData(grid, {x: coords.x, y: coords.y, z: coords.z - 1});
 
     var sideNames = ['down', 'up', 'right', 'left', 'front', 'back'];
 
