@@ -66,7 +66,7 @@ define(['chunk'], function(chunk) {
 
       fillGrid(grid, 0, 0, 0, 32, 32, 32);
 
-      var meshData = chunk.generate(grid, {x: 16, y: 16, z: 16}, {x: 1, y: 1, z: 1});
+      var meshData = chunk.generate(grid, {x: 16, y: 16, z: 16}, {x: 1, y: 1, z: 1}, 1);
 
       // don't calculate as a volume, but a surface area of verts
       // 16 cubes per side, 6 sides, and 4 verts per cube, but half of that since we're only taking 3 sides (the remaining cube is filled)
@@ -76,5 +76,6 @@ define(['chunk'], function(chunk) {
       // TODO: we should probably split tests up to capture this behavior and simpler behavior as well.
       expect(meshData.renderMesh[0]).toEqual({x: 17, y: 16, z: 32});
     });
+
   }); // describe chunk
 }); // define

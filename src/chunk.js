@@ -2,7 +2,7 @@
 
 define(['cube'], function(cube) {
 
-  var generate = function(grid, chunkSize, chunkOffset) {
+  var generate = function(grid, chunkSize, chunkOffset, cubeSize) {
     var chunkMeshData = {
       renderMesh: []
     };
@@ -13,7 +13,7 @@ define(['cube'], function(cube) {
           var coords = {x: x + (chunkOffset.x * chunkSize.x), y: y + (chunkOffset.y * chunkSize.y), z: z + (chunkOffset.z * chunkSize.z)};
           var cubeData = grid[coords.x][coords.y][coords.z];
           if(cubeData == null) continue;
-          var cubeMeshData = cube.generate(grid, coords);
+          var cubeMeshData = cube.generate(grid, coords, cubeSize);
           chunkMeshData.renderMesh = chunkMeshData.renderMesh.concat(cubeMeshData.renderMesh);
         }
       }

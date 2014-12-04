@@ -68,7 +68,7 @@ define(['lodash'], function(_) {
       var side = neighbors[sideName];
       if(side == null) {
         var sideVertexes = _.map(sidedMeshes[sideName], function(vertex) {
-          var result = {x: vertex.x + coords.x, y: vertex.y + coords.y, z: vertex.z + coords.z};
+          var result = {x: (vertex.x + coords.x) * cubeSize, y: (vertex.y + coords.y) * cubeSize, z: (vertex.z + coords.z) * cubeSize};
           return result;
         });
 
