@@ -41,7 +41,7 @@ define(['lodash'], function(_) {
     ]
   };
 
-  var getCubeData = function(grid, coords) {
+  var getVoxelData = function(grid, coords) {
     var yzGrid = grid[coords.x];
     if(!yzGrid) return null;
     var zGrid = yzGrid[coords.y];
@@ -49,26 +49,26 @@ define(['lodash'], function(_) {
     return zGrid[coords.z];
   };
 
-  var generate = function(grid, coords, cubeSize) {
+  var generate = function(grid, coords, voxelSize) {
     var meshData = {renderMesh: []};
 
     var neighbors = {};
-    neighbors.down  = getCubeData(grid, {x: coords.x, y: coords.y - 1, z: coords.z});
-    neighbors.up    = getCubeData(grid, {x: coords.x, y: coords.y + 1, z: coords.z});
-    neighbors.right = getCubeData(grid, {x: coords.x + 1, y: coords.y, z: coords.z});
-    neighbors.left  = getCubeData(grid, {x: coords.x - 1, y: coords.y, z: coords.z});
-    neighbors.front = getCubeData(grid, {x: coords.x, y: coords.y, z: coords.z + 1});
-    neighbors.back  = getCubeData(grid, {x: coords.x, y: coords.y, z: coords.z - 1});
+    neighbors.down  = getVoxelData(grid, {x: coords.x, y: coords.y - 1, z: coords.z});
+    neighbors.up    = getVoxelData(grid, {x: coords.x, y: coords.y + 1, z: coords.z});
+    neighbors.right = getVoxelData(grid, {x: coords.x + 1, y: coords.y, z: coords.z});
+    neighbors.left  = getVoxelData(grid, {x: coords.x - 1, y: coords.y, z: coords.z});
+    neighbors.front = getVoxelData(grid, {x: coords.x, y: coords.y, z: coords.z + 1});
+    neighbors.back  = getVoxelData(grid, {x: coords.x, y: coords.y, z: coords.z - 1});
 
     var sideNames = ['down', 'up', 'right', 'left', 'front', 'back'];
 
-    //var cube = grid[coords.x][coords.y][coords.z];
+    //var voxel = grid[coords.x][coords.y][coords.z];
 
     sideNames.forEach(function(sideName) {
       var side = neighbors[sideName];
       if(side == null) {
         var sideVertexes = _.map(sidedMeshes[sideName], function(vertex) {
-          var result = {x: (vertex.x + coords.x) * cubeSize, y: (vertex.y + coords.y) * cubeSize, z: (vertex.z + coords.z) * cubeSize};
+          var result = {x: (vertex.x + coords.x) * voxelSize, y: (vertex.y + coords.y) * voxelSize, z: (vertex.z + coords.z) * voxelSize};
           return result;
         });
 

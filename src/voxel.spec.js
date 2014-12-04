@@ -1,8 +1,8 @@
 'use strict';
 
-define(['cube'], function(cube) {
+define(['voxel'], function(voxel) {
 
-  describe('cube', function() {
+  describe('voxel', function() {
     it('generates a normal render mesh when there are no neighbors', function() {
       var grid = [
         [
@@ -22,7 +22,7 @@ define(['cube'], function(cube) {
         ]
       ];
 
-      var meshData = cube.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -75,7 +75,7 @@ define(['cube'], function(cube) {
         ]
       ];
 
-      var meshData = cube.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -123,7 +123,7 @@ define(['cube'], function(cube) {
         ]
       ];
 
-      var meshData = cube.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
       expect(meshData.renderMesh).toBeTruthy();
       // top
       expect(meshData.renderMesh[0]).toEqual({x: 1, y: 2, z: 1});
@@ -171,7 +171,7 @@ define(['cube'], function(cube) {
         ]
       ];
 
-      var meshData = cube.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -219,7 +219,7 @@ define(['cube'], function(cube) {
         ]
       ];
 
-      var meshData = cube.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -267,7 +267,7 @@ define(['cube'], function(cube) {
         ]
       ];
 
-      var meshData = cube.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -315,7 +315,7 @@ define(['cube'], function(cube) {
         ]
       ];
 
-      var meshData = cube.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -346,7 +346,7 @@ define(['cube'], function(cube) {
       expect(meshData.renderMesh.length).toEqual(20); // only way to make sure the back is omitted correctly
     });
 
-    it('generates a visible render mesh on the edge side when the cube is on the edge of the grid', function() {
+    it('generates a visible render mesh on the edge side when the voxel is on the edge of the grid', function() {
       var grid = [
         [
           [null, null, null],
@@ -362,7 +362,7 @@ define(['cube'], function(cube) {
         ]
       ];
 
-      var meshData = cube.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -396,7 +396,7 @@ define(['cube'], function(cube) {
       expect(meshData.renderMesh[23]).toEqual({x: 2, y: 2, z: 1});
     });
 
-    it('scales the cube dimensions based on the cubeSize', function() {
+    it('scales the voxel dimensions based on the voxelSize', function() {
       var grid = [
         [
           [null, null, null],
@@ -415,7 +415,7 @@ define(['cube'], function(cube) {
         ]
       ];
 
-      var meshData = cube.generate(grid, {x: 1, y: 1, z: 1}, 2);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 2);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 4, y: 2, z: 2});
@@ -448,6 +448,6 @@ define(['cube'], function(cube) {
       expect(meshData.renderMesh[22]).toEqual({x: 4, y: 2, z: 2});
       expect(meshData.renderMesh[23]).toEqual({x: 4, y: 4, z: 2});
     });
-  }); // describe cube
+  }); // describe voxel
 
 }); // define

@@ -1,8 +1,8 @@
 'use strict';
 
-define(['cube'], function(cube) {
+define(['voxel'], function(voxel) {
 
-  var generate = function(grid, chunkSize, chunkOffset, cubeSize) {
+  var generate = function(grid, chunkSize, chunkOffset, voxelSize) {
     var chunkMeshData = {
       renderMesh: []
     };
@@ -11,10 +11,13 @@ define(['cube'], function(cube) {
       for(var y = 0; y < chunkSize.y; ++y) {
         for(var z = 0; z < chunkSize.z; ++z) {
           var coords = {x: x + (chunkOffset.x * chunkSize.x), y: y + (chunkOffset.y * chunkSize.y), z: z + (chunkOffset.z * chunkSize.z)};
-          var cubeData = grid[coords.x][coords.y][coords.z];
-          if(cubeData == null) continue;
-          var cubeMeshData = cube.generate(grid, coords, cubeSize);
-          chunkMeshData.renderMesh = chunkMeshData.renderMesh.concat(cubeMeshData.renderMesh);
+          if(grid[coords.x] == null) continue;
+          if(grid[coords.x][coords.y] == null) continue;
+          if(grid[coords.x][coords.y][coords.z] == null) continue;
+          var voxelData = grid[coords.x][coords.y][coords.z];
+          if(voxelData == null) continue;
+          var voxelMeshData = voxel.generate(grid, coords, voxelSize);
+          chunkMeshData.renderMesh = chunkMeshData.renderMesh.concat(voxelMeshData.renderMesh);
         }
       }
     }
