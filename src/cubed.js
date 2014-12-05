@@ -4,7 +4,7 @@ define(['chunk', 'voxel'], function(chunk, voxel) {
 
   var chunks = [];
   var generate = function(grid, chunkSize, voxelSize) {
-    var chunkXLength = parseInt(grid.length / chunkSize.x); // TODO: this math is wrong. Fenceposting
+    var chunkXLength = parseInt(grid.length / chunkSize.x);
     var chunkYLength = parseInt(grid[0].length / chunkSize.y);
     var chunkZLength = parseInt(grid[0][0].length / chunkSize.z);
 
@@ -23,8 +23,6 @@ define(['chunk', 'voxel'], function(chunk, voxel) {
         }
       }
     }
-
-    return {renderMesh: Array(6 * 4)};
   };
 
   return {
