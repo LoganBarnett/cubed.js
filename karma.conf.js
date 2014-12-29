@@ -4,12 +4,14 @@ module.exports = function(config) {
   config.set({
     browsers: ['Chrome'],
     files: [
-      {pattern: 'src/**/*.spec.js', included: false},
-      {pattern: 'src/**/*!(.spec).js', included: false},
-      {pattern: 'node_modules/lodash/dist/lodash.js', included: false},
-      {pattern: 'requirejs_placation.js', included: true}
+      'node_modules/lodash/dist/lodash.js'
+      , 'src/cubed.js', 'src/**/*.js'
+      //{pattern: 'src/**/*.spec.js', included: false},
+      //{pattern: 'src/**/*!(.spec).js', included: false},
+      //{pattern: 'node_modules/lodash/dist/lodash.js', included: false},
+      //{pattern: 'requirejs_placation.js', included: true}
     ],
-    frameworks: ['jasmine', 'requirejs'],
+    frameworks: ['jasmine'],
     baseUrl: '/base'
     //logLevel: config.LOG_DEBUG
     //captureTimeout: 30000,

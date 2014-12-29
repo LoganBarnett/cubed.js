@@ -1,6 +1,8 @@
 'use strict';
 
-define(['voxel'], function(voxel) {
+(function(cubed) {
+
+  var voxel = cubed.VOXEL;
 
   describe('voxel', function() {
     it('generates a normal render mesh when there are no neighbors', function() {
@@ -450,4 +452,4 @@ define(['voxel'], function(voxel) {
     });
   }); // describe voxel
 
-}); // define
+}(CUBED)); // define

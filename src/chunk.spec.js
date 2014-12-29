@@ -1,6 +1,8 @@
 'use strict';
 
-define(['chunk'], function(chunk) {
+(function() {
+  var chunk = CUBED.CHUNK;
+
   var createGrid = function(xSize, ySize, zSize) {
     var grid = Array(xSize);
     for(var x = 0; x < xSize; ++x) {
@@ -78,4 +80,4 @@ define(['chunk'], function(chunk) {
     });
 
   }); // describe chunk
-}); // define
+}(CUBED)); // define

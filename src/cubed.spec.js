@@ -1,6 +1,6 @@
 'use strict';
 
-define(['cubed'], function(cubed) {
+(function(cubed) {
   describe('cubed', function() {
     it('creates a chunk for a small grid', function() {
       var grid = [
@@ -71,4 +71,4 @@ define(['cubed'], function(cubed) {
     });
 
   });
-});
+}(CUBED));

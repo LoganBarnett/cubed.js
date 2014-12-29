@@ -1,6 +1,8 @@
 'use strict';
 
-define(['lodash'], function(_) {
+CUBED = (function(cubed, _) {
+
+  var voxel = cubed.VOXEL = cubed.VOXEL || {};
 
   var sidedMeshes = {
     down: [
@@ -49,7 +51,7 @@ define(['lodash'], function(_) {
     return zGrid[coords.z];
   };
 
-  var generate = function(grid, coords, voxelSize) {
+  voxel.generate = function(grid, coords, voxelSize) {
     var meshData = {renderMesh: []};
 
     var neighbors = {};
@@ -79,7 +81,5 @@ define(['lodash'], function(_) {
     return meshData;
   };
 
-  return {
-    generate: generate
-  };
-});
+  return cubed;
+}(CUBED, _));

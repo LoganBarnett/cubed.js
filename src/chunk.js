@@ -1,8 +1,9 @@
 'use strict';
 
-define(['voxel'], function(voxel) {
+CUBED = (function(cubed) {
+  var chunk = cubed.CHUNK = cubed.CHUNK || {};
 
-  var generate = function(grid, chunkSize, chunkOffset, voxelSize) {
+  chunk.generate = function(grid, chunkSize, chunkOffset, voxelSize) {
     var chunkMeshData = {
       renderMesh: []
     };
@@ -16,7 +17,7 @@ define(['voxel'], function(voxel) {
           if(grid[coords.x][coords.y][coords.z] == null) continue;
           var voxelData = grid[coords.x][coords.y][coords.z];
           if(voxelData == null) continue;
-          var voxelMeshData = voxel.generate(grid, coords, voxelSize);
+          var voxelMeshData = cubed.VOXEL.generate(grid, coords, voxelSize);
           chunkMeshData.renderMesh = chunkMeshData.renderMesh.concat(voxelMeshData.renderMesh);
         }
       }
@@ -25,7 +26,5 @@ define(['voxel'], function(voxel) {
     return chunkMeshData;
   };
 
-  return {
-    generate: generate
-  };
-});
+  return cubed;
+}(CUBED));

@@ -1,0 +1,26 @@
+{
+  "name": "cubed",
+  "version": "0.0.1",
+  "homepage": "https://github.com/LoganBarnett/cubed.js",
+  "authors": [
+    "Logan Barnett <logustus@gmail.com>"
+  ],
+  "description": "A Javascript voxel library",
+  "main": "src/cubed.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "voxel",
+    "3d",
+    "cube"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

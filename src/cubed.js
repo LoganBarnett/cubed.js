@@ -1,9 +1,11 @@
 'use strict';
 
-define(['chunk', 'voxel'], function(chunk, voxel) {
+var CUBED = (function() {
 
-  var chunks = [];
-  var generate = function(grid, chunkSize, voxelSize) {
+  var cubed = {};
+
+  cubed.chunks = [];
+  cubed.generate = function(grid, chunkSize, voxelSize) {
     var chunkXLength = parseInt(grid.length / chunkSize.x);
     var chunkYLength = parseInt(grid[0].length / chunkSize.y);
     var chunkZLength = parseInt(grid[0][0].length / chunkSize.z);
@@ -15,18 +17,15 @@ define(['chunk', 'voxel'], function(chunk, voxel) {
     for(var x = 0; x < chunkXLength; ++x) {
       for(var y = 0; y < chunkYLength; ++y) {
         for(var z = 0; z < chunkZLength; ++z) {
-          var chunkMeshData = chunk.generate(grid, chunkSize, {x: x, y: y, z: z}, voxelSize);
-          if(chunks[x] == null) chunks[x] = [];
-          if(chunks[x][y] == null) chunks[x][y] = [];
-          if(chunks[x][y][z] == null) chunks[x][y][z] = [];
-          chunks[x][y][z] = chunkMeshData;
+          var chunkMeshData = cubed.CHUNK.generate(grid, chunkSize, {x: x, y: y, z: z}, voxelSize);
+          if(cubed.chunks[x] == null) cubed.chunks[x] = [];
+          if(cubed.chunks[x][y] == null) cubed.chunks[x][y] = [];
+          if(cubed.chunks[x][y][z] == null) cubed.chunks[x][y][z] = [];
+          cubed.chunks[x][y][z] = chunkMeshData;
         }
       }
     }
   };
 
-  return {
-      generate: generate
-    , chunks: chunks
-  };
-});
+  return cubed;
+}());
