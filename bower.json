@@ -6,7 +6,7 @@
     "Logan Barnett <logustus@gmail.com>"
   ],
   "description": "A Javascript voxel library",
-  "main": "src/cubed.js",
+  "main": ["src/cubed.js", "src/chunk.js", "src/voxel.js"],
   "moduleType": [
     "globals"
   ],
@@ -17,7 +17,7 @@
   ],
   "license": "MIT",
   "ignore": [
-    "**/.*",
+    "*",
     "node_modules",
     "bower_components",
     "test",
