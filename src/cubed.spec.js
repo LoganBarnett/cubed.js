@@ -9,11 +9,13 @@
         ]
       ];
 
-      var cubedMeshData = cubed.generate(grid, {x: 16, y: 16, z: 16}, 1);
+      var cubedObject = cubed.create();
 
-      expect(cubed.chunks.length).toBe(1);
-      expect(cubed.chunks[0].length).toBe(1);
-      expect(cubed.chunks[0][0].length).toBe(1);
+      var cubedMeshData = cubedObject.generate(grid, {x: 16, y: 16, z: 16}, 1);
+
+      expect(cubedObject.chunks.length).toBe(1);
+      expect(cubedObject.chunks[0].length).toBe(1);
+      expect(cubedObject.chunks[0][0].length).toBe(1);
 
       //expect(cubedMeshData).not.toBeUndefined();
       //expect(cubedMeshData).not.toBeNull();
@@ -31,11 +33,12 @@
         ]
       ];
 
-      cubed.generate(grid, {x: 16, y: 16, z: 16}, 1);
+      var cubedObject = cubed.create();
+      cubedObject.generate(grid, {x: 16, y: 16, z: 16}, 1);
 
-      expect(cubed.chunks.length).toBe(1);
-      expect(cubed.chunks[0].length).toBe(1);
-      expect(cubed.chunks[0][0].length).toBe(2);
+      expect(cubedObject.chunks.length).toBe(1);
+      expect(cubedObject.chunks[0].length).toBe(1);
+      expect(cubedObject.chunks[0][0].length).toBe(2);
     });
 
     it('can add voxels and regenerate the chunk meshes', function() {
@@ -45,13 +48,15 @@
         ]
       ];
 
-      cubed.generate(grid, {x: 16, y: 16, z: 16}, 1);
+      var cubedObject = cubed.create();
 
-      expect(cubed.chunks[0][0][0].renderMesh.length).toBe(24);
+      cubedObject.generate(grid, {x: 16, y: 16, z: 16}, 1);
+
+      expect(cubedObject.chunks[0][0][0].renderMesh.length).toBe(24);
 
       grid[0][0][1] = {};
-      cubed.generate(grid, {x: 16, y: 16, z: 16}, 1);
-      expect(cubed.chunks[0][0][0].renderMesh.length).toBe(40);
+      cubedObject.generate(grid, {x: 16, y: 16, z: 16}, 1);
+      expect(cubedObject.chunks[0][0][0].renderMesh.length).toBe(40);
     });
 
     it('can remove voxels and regenerate the chunk meshes', function() {
@@ -61,13 +66,14 @@
         ]
       ];
 
-      cubed.generate(grid, {x: 16, y: 16, z: 16}, 1);
+      var cubedObject = cubed.create();
+      cubedObject.generate(grid, {x: 16, y: 16, z: 16}, 1);
 
-      expect(cubed.chunks[0][0][0].renderMesh.length).toBe(40);
+      expect(cubedObject.chunks[0][0][0].renderMesh.length).toBe(40);
 
       grid[0][0][1] = null;
-      cubed.generate(grid, {x: 16, y: 16, z: 16}, 1);
-      expect(cubed.chunks[0][0][0].renderMesh.length).toBe(24);
+      cubedObject.generate(grid, {x: 16, y: 16, z: 16}, 1);
+      expect(cubedObject.chunks[0][0][0].renderMesh.length).toBe(24);
     });
 
   });
