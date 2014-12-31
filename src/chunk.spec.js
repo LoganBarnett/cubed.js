@@ -79,5 +79,16 @@
       expect(meshData.renderMesh[0]).toEqual({x: 17, y: 16, z: 32});
     });
 
+    it('builds up a list of triangles as part of its mesh data', function() {
+      var grid = createGrid(1, 1, 1);
+
+      fillGrid(grid, 0, 0, 0, 1, 1, 1);
+
+      var meshData = chunk.generate(grid, {x: 1, y: 1, z: 1}, {x: 0, y: 0, z: 0}, 1);
+
+      expect(meshData.triangles).toBeDefined();
+      expect(meshData.triangles.length).toEqual(6 * 2);
+    });
+
   }); // describe chunk
 }(CUBED)); // define
