@@ -43,7 +43,7 @@
       expect(meshData.renderMesh[11]).toEqual({x: 2, y: 2, z: 2});
       // left
       expect(meshData.renderMesh[12]).toEqual({x: 1, y: 1, z: 2});
-      expect(meshData.renderMesh[13]).toEqual({x: 2, y: 2, z: 2});
+      expect(meshData.renderMesh[13]).toEqual({x: 1, y: 2, z: 2});
       expect(meshData.renderMesh[14]).toEqual({x: 1, y: 1, z: 1});
       expect(meshData.renderMesh[15]).toEqual({x: 1, y: 2, z: 1});
       // front
@@ -139,7 +139,7 @@
       expect(meshData.renderMesh[7]).toEqual({x: 2, y: 2, z: 2});
       // left
       expect(meshData.renderMesh[8]).toEqual({x: 1, y: 1, z: 2});
-      expect(meshData.renderMesh[9]).toEqual({x: 2, y: 2, z: 2});
+      expect(meshData.renderMesh[9]).toEqual({x: 1, y: 2, z: 2});
       expect(meshData.renderMesh[10]).toEqual({x: 1, y: 1, z: 1});
       expect(meshData.renderMesh[11]).toEqual({x: 1, y: 2, z: 1});
       // front
@@ -187,7 +187,7 @@
       expect(meshData.renderMesh[7]).toEqual({x: 2, y: 2, z: 2});
       // left
       expect(meshData.renderMesh[8]).toEqual({x: 1, y: 1, z: 2});
-      expect(meshData.renderMesh[9]).toEqual({x: 2, y: 2, z: 2});
+      expect(meshData.renderMesh[9]).toEqual({x: 1, y: 2, z: 2});
       expect(meshData.renderMesh[10]).toEqual({x: 1, y: 1, z: 1});
       expect(meshData.renderMesh[11]).toEqual({x: 1, y: 2, z: 1});
       // front
@@ -235,7 +235,7 @@
       expect(meshData.renderMesh[7]).toEqual({x: 2, y: 2, z: 2});
       // left
       expect(meshData.renderMesh[8]).toEqual({x: 1, y: 1, z: 2});
-      expect(meshData.renderMesh[9]).toEqual({x: 2, y: 2, z: 2});
+      expect(meshData.renderMesh[9]).toEqual({x: 1, y: 2, z: 2});
       expect(meshData.renderMesh[10]).toEqual({x: 1, y: 1, z: 1});
       expect(meshData.renderMesh[11]).toEqual({x: 1, y: 2, z: 1});
       // front
@@ -288,7 +288,7 @@
       expect(meshData.renderMesh[11]).toEqual({x: 2, y: 2, z: 2});
       // left
       expect(meshData.renderMesh[12]).toEqual({x: 1, y: 1, z: 2});
-      expect(meshData.renderMesh[13]).toEqual({x: 2, y: 2, z: 2});
+      expect(meshData.renderMesh[13]).toEqual({x: 1, y: 2, z: 2});
       expect(meshData.renderMesh[14]).toEqual({x: 1, y: 1, z: 1});
       expect(meshData.renderMesh[15]).toEqual({x: 1, y: 2, z: 1});
       // back
@@ -336,7 +336,7 @@
       expect(meshData.renderMesh[11]).toEqual({x: 2, y: 2, z: 2});
       // left
       expect(meshData.renderMesh[12]).toEqual({x: 1, y: 1, z: 2});
-      expect(meshData.renderMesh[13]).toEqual({x: 2, y: 2, z: 2});
+      expect(meshData.renderMesh[13]).toEqual({x: 1, y: 2, z: 2});
       expect(meshData.renderMesh[14]).toEqual({x: 1, y: 1, z: 1});
       expect(meshData.renderMesh[15]).toEqual({x: 1, y: 2, z: 1});
       // front
@@ -383,7 +383,7 @@
       expect(meshData.renderMesh[11]).toEqual({x: 2, y: 2, z: 2});
       // left
       expect(meshData.renderMesh[12]).toEqual({x: 1, y: 1, z: 2});
-      expect(meshData.renderMesh[13]).toEqual({x: 2, y: 2, z: 2});
+      expect(meshData.renderMesh[13]).toEqual({x: 1, y: 2, z: 2});
       expect(meshData.renderMesh[14]).toEqual({x: 1, y: 1, z: 1});
       expect(meshData.renderMesh[15]).toEqual({x: 1, y: 2, z: 1});
       // front
@@ -436,7 +436,7 @@
       expect(meshData.renderMesh[11]).toEqual({x: 4, y: 4, z: 4});
       // left
       expect(meshData.renderMesh[12]).toEqual({x: 2, y: 2, z: 4});
-      expect(meshData.renderMesh[13]).toEqual({x: 4, y: 4, z: 4});
+      expect(meshData.renderMesh[13]).toEqual({x: 2, y: 4, z: 4});
       expect(meshData.renderMesh[14]).toEqual({x: 2, y: 2, z: 2});
       expect(meshData.renderMesh[15]).toEqual({x: 2, y: 4, z: 2});
       // front
@@ -483,6 +483,37 @@
           [20, 21, 22], [21, 23, 22]
         ]
       );
+    });
+
+    it('generates uvs from verteces', function() {
+      var grid = [
+        [
+          [null, null, null],
+          [null, null, null],
+          [null, null, null]
+        ],
+        [
+          [null, null, null],
+          [null, {}, null],
+          [null, null, null]
+        ],
+        [
+          [null, null, null],
+          [null, null, null],
+          [null, null, null]
+        ]
+      ];
+
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 2);
+      expect(meshData.uvs).toBeTruthy();
+      // just look at one side for this test
+      expect(meshData.uvs[0][0]).toEqual({u: 0, v: 0});
+      expect(meshData.uvs[0][1]).toEqual({u: 0, v: 1});
+      expect(meshData.uvs[0][2]).toEqual({u: 1, v: 0});
+      expect(meshData.uvs[0][3]).toEqual({u: 1, v: 1});
+
+      expect(meshData.uvs.length).toEqual(12);
+      expect(meshData.uvs[0].length).toEqual(4);
     });
   }); // describe voxel
 

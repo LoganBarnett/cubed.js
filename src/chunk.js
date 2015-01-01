@@ -7,6 +7,7 @@ CUBED = (function(cubed) {
     var chunkMeshData = {
         renderMesh: []
       , triangles: []
+      , uvs: []
     };
 
     for(var x = 0; x < chunkSize.x; ++x) {
@@ -22,6 +23,8 @@ CUBED = (function(cubed) {
           chunkMeshData.renderMesh = chunkMeshData.renderMesh.concat(voxelMeshData.renderMesh);
 
           chunkMeshData.triangles = chunkMeshData.triangles.concat(voxelMeshData.triangles);
+
+          chunkMeshData.uvs = chunkMeshData.uvs.concat(voxelMeshData.uvs)
         }
       }
     }
