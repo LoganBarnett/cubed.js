@@ -10,6 +10,8 @@ CUBED = (function(cubed) {
       , uvs: []
     };
 
+    var vertexCount = 0;
+
     for(var x = 0; x < chunkSize.x; ++x) {
       for(var y = 0; y < chunkSize.y; ++y) {
         for(var z = 0; z < chunkSize.z; ++z) {
@@ -19,7 +21,8 @@ CUBED = (function(cubed) {
           if(grid[coords.x][coords.y][coords.z] == null) continue;
           var voxelData = grid[coords.x][coords.y][coords.z];
           if(voxelData == null) continue;
-          var voxelMeshData = cubed.VOXEL.generate(grid, coords, voxelSize);
+          var voxelMeshData = cubed.VOXEL.generate(grid, coords, voxelSize, vertexCount);
+          vertexCount = voxelMeshData.vertexCount;
           chunkMeshData.renderMesh = chunkMeshData.renderMesh.concat(voxelMeshData.renderMesh);
 
           chunkMeshData.triangles = chunkMeshData.triangles.concat(voxelMeshData.triangles);

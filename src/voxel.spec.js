@@ -24,7 +24,7 @@
         ]
       ];
 
-      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -77,7 +77,7 @@
         ]
       ];
 
-      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -125,7 +125,7 @@
         ]
       ];
 
-      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
       expect(meshData.renderMesh).toBeTruthy();
       // top
       expect(meshData.renderMesh[0]).toEqual({x: 1, y: 2, z: 1});
@@ -173,7 +173,7 @@
         ]
       ];
 
-      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -221,7 +221,7 @@
         ]
       ];
 
-      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -269,7 +269,7 @@
         ]
       ];
 
-      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -317,7 +317,7 @@
         ]
       ];
 
-      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -364,7 +364,7 @@
         ]
       ];
 
-      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -417,7 +417,7 @@
         ]
       ];
 
-      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 2);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 2, 0);
       expect(meshData.renderMesh).toBeTruthy();
       // bottom
       expect(meshData.renderMesh[0]).toEqual({x: 4, y: 2, z: 2});
@@ -470,7 +470,7 @@
         ]
       ];
 
-      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 2);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 2, 0);
       expect(meshData.triangles).toBeTruthy();
       // bottom
       expect(meshData.triangles).toEqual(
@@ -504,16 +504,67 @@
         ]
       ];
 
-      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 2);
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 2, 0);
       expect(meshData.uvs).toBeTruthy();
       // just look at one side for this test
       expect(meshData.uvs[0][0]).toEqual({u: 0, v: 0});
-      expect(meshData.uvs[0][1]).toEqual({u: 0, v: 1});
-      expect(meshData.uvs[0][2]).toEqual({u: 1, v: 0});
+      expect(meshData.uvs[0][1]).toEqual({u: 1, v: 0});
+      expect(meshData.uvs[0][2]).toEqual({u: 0, v: 1});
       expect(meshData.uvs[0][3]).toEqual({u: 1, v: 1});
 
       expect(meshData.uvs.length).toEqual(12);
       expect(meshData.uvs[0].length).toEqual(4);
+    });
+
+    it('accumulates a vertex count', function() {
+      var grid = [
+        [
+          [null, null, null],
+          [null, null, null],
+          [null, null, null]
+        ],
+        [
+          [null, null, null],
+          [null, {}, null],
+          [null, null, null]
+        ],
+        [
+          [null, null, null],
+          [null, null, null],
+          [null, null, null]
+        ]
+      ];
+
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 2, 0);
+      expect(meshData.vertexCount).toBeTruthy();
+      expect(meshData.vertexCount).toEqual(4 * 6);
+    });
+
+    it('offsets triangle indicies by the vertex count', function() {
+      var grid = [
+        [
+          [null, null, null],
+          [null, null, null],
+          [null, null, null]
+        ],
+        [
+          [null, null, null],
+          [null, {}, null],
+          [null, null, null]
+        ],
+        [
+          [null, null, null],
+          [null, null, null],
+          [null, null, null]
+        ]
+      ];
+
+      var meshData = voxel.generate(grid, {x: 1, y: 1, z: 1}, 2, 4);
+
+      expect(meshData.triangles).toBeTruthy();
+      // bottom
+      expect(meshData.triangles[0]).toEqual([4, 5, 6]);
+      expect(meshData.triangles[1]).toEqual([5, 7, 6]);
     });
   }); // describe voxel
 

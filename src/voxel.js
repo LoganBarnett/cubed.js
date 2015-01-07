@@ -54,8 +54,8 @@ CUBED = (function(cubed, _) {
     return zGrid[coords.z];
   };
 
-  voxel.generate = function(grid, coords, voxelSize) {
-    var meshData = {renderMesh: [], triangles: [], uvs: [], vertexCount: 0};
+  voxel.generate = function(grid, coords, voxelSize, vertexCount) {
+    var meshData = {renderMesh: [], triangles: [], uvs: [], vertexCount: vertexCount};
 
     var neighbors = {};
     neighbors.down  = getVoxelData(grid, {x: coords.x, y: coords.y - 1, z: coords.z});
@@ -66,7 +66,7 @@ CUBED = (function(cubed, _) {
     neighbors.back  = getVoxelData(grid, {x: coords.x, y: coords.y, z: coords.z - 1});
 
     var sideNames = ['down', 'up', 'right', 'left', 'front', 'back'];
-
+    //var sideNames = ['left'];
     //var voxel = grid[coords.x][coords.y][coords.z];
 
     sideNames.forEach(function(sideName) {
@@ -82,7 +82,7 @@ CUBED = (function(cubed, _) {
         meshData.triangles.push(_.map(SECOND_TRIANGLES, function(t) { return t + meshData.vertexCount; }));
         meshData.vertexCount += 4;
 
-        meshData.uvs.push([{u: 0, v: 0}, {u: 0, v: 1}, {u: 1, v: 0}, {u: 1, v: 1}])
+        meshData.uvs.push([{u: 0, v: 0}, {u: 1, v: 0}, {u: 0, v: 1}, {u: 1, v: 1}])
         meshData.uvs.push([{u: 0, v: 0}, {u: 0, v: 1}, {u: 1, v: 0}, {u: 1, v: 1}])
       }
     });
