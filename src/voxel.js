@@ -2,19 +2,20 @@
 
 CUBED = (function(cubed, _) {
 
-  var voxel = cubed.VOXEL = cubed.VOXEL || {};
+  var voxel = cubed.VOXEL = cubed.VOXEL || function() {
+  };
 
   var FIRST_TRIANGLES  = [0, 1, 2];
   var SECOND_TRIANGLES = [1, 3, 2];
 
   var sidedMeshes = {
-    down: [
+    bottom: [
       {x: 1, y: 0, z: 0},
       {x: 1, y: 0, z: 1},
       {x: 0, y: 0, z: 0},
       {x: 0, y: 0, z: 1}
     ],
-    up: [
+    top: [
       {x: 0, y: 1, z: 0},
       {x: 0, y: 1, z: 1},
       {x: 1, y: 1, z: 0},
@@ -46,34 +47,16 @@ CUBED = (function(cubed, _) {
     ]
   };
 
-  var getVoxelData = function(grid, coords) {
-    var yzGrid = grid[coords.x];
-    if(!yzGrid) return null;
-    var zGrid = yzGrid[coords.y];
-    if(!zGrid) return null;
-    return zGrid[coords.z];
-  };
-
-  voxel.generate = function(grid, coords, voxelSize, vertexCount) {
+  voxel.prototype.generate = function(grid, coords, voxelSize, vertexCount) {
     var meshData = {renderMesh: [], triangles: [], uvs: [], vertexCount: vertexCount};
 
-    var neighbors = {};
-    neighbors.down  = getVoxelData(grid, {x: coords.x, y: coords.y - 1, z: coords.z});
-    neighbors.up    = getVoxelData(grid, {x: coords.x, y: coords.y + 1, z: coords.z});
-    neighbors.right = getVoxelData(grid, {x: coords.x + 1, y: coords.y, z: coords.z});
-    neighbors.left  = getVoxelData(grid, {x: coords.x - 1, y: coords.y, z: coords.z});
-    neighbors.front = getVoxelData(grid, {x: coords.x, y: coords.y, z: coords.z + 1});
-    neighbors.back  = getVoxelData(grid, {x: coords.x, y: coords.y, z: coords.z - 1});
-
-    var sideNames = ['down', 'up', 'right', 'left', 'front', 'back'];
-    //var sideNames = ['left'];
-    //var voxel = grid[coords.x][coords.y][coords.z];
+    var sideNames = ['bottom', 'top', 'right', 'left', 'front', 'back'];
 
     sideNames.forEach(function(sideName) {
-      var side = neighbors[sideName];
-      if(side == null) {
+      var sideCoords = coords[sideName]();
+      if(!grid.get(sideCoords)) {
         var sideVertexes = _.map(sidedMeshes[sideName], function(vertex) {
-          var result = {x: (vertex.x + coords.x) * voxelSize, y: (vertex.y + coords.y) * voxelSize, z: (vertex.z + coords.z) * voxelSize};
+          var result = new cubed.VECTOR((vertex.x + coords.x) * voxelSize, (vertex.y + coords.y) * voxelSize, (vertex.z + coords.z) * voxelSize);
           return result;
         });
 

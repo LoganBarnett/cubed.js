@@ -27,4 +27,7 @@
     return new cubed.VECTOR(this.x, this.y - 1, this.z);
   };
 
+  vector.prototype.toString = function() {
+    return '{x: ' + this.x + ', y: ' + this.y + ', z: ' + this.z + '}';
+  };
 }(CUBED));

@@ -2,33 +2,31 @@
 
 var CUBED = (function() {
 
-  var cubed = {};
-  cubed.create = function() {
-    var cubedObject = {};
+  var cubed = function() {
+  };
 
-    cubedObject.chunks = [];
-    cubedObject.generate = function (grid, chunkSize, voxelSize) {
-      var chunkXLength = parseInt(grid.length / chunkSize.x);
-      var chunkYLength = parseInt(grid[0].length / chunkSize.y);
-      var chunkZLength = parseInt(grid[0][0].length / chunkSize.z);
+  cubed.prototype.generate = function (grid, chunkSize, voxelSize) {
+    this.chunkSize = chunkSize;
+    var chunkXLength = parseInt(grid.size.x / chunkSize.x);
+    var chunkYLength = parseInt(grid.size.y / chunkSize.y);
+    var chunkZLength = parseInt(grid.size.z / chunkSize.z);
 
-      if (grid.length % chunkSize.x != 0) ++chunkXLength;
-      if (grid[0].length % chunkSize.y != 0) ++chunkYLength;
-      if (grid[0][0].length % chunkSize.z != 0) ++chunkZLength;
+    if(grid.size.x % chunkSize.x != 0) ++chunkXLength;
+    if(grid.size.y % chunkSize.y != 0) ++chunkYLength;
+    if(grid.size.z % chunkSize.z != 0) ++chunkZLength;
 
-      for (var x = 0; x < chunkXLength; ++x) {
-        for (var y = 0; y < chunkYLength; ++y) {
-          for (var z = 0; z < chunkZLength; ++z) {
-            var chunkMeshData = cubed.CHUNK.generate(grid, chunkSize, {x: x, y: y, z: z}, voxelSize);
-            if (cubedObject.chunks[x] == null) cubedObject.chunks[x] = [];
-            if (cubedObject.chunks[x][y] == null) cubedObject.chunks[x][y] = [];
-            if (cubedObject.chunks[x][y][z] == null) cubedObject.chunks[x][y][z] = [];
-            cubedObject.chunks[x][y][z] = chunkMeshData;
-          }
+    var chunkDimensions = new cubed.VECTOR(chunkXLength, chunkYLength, chunkZLength);
+    this.chunks = new cubed.GRID(chunkDimensions);
+
+    for (var x = 0; x < chunkXLength; ++x) {
+      for (var y = 0; y < chunkYLength; ++y) {
+        for (var z = 0; z < chunkZLength; ++z) {
+          var chunk = new cubed.CHUNK();
+          var chunkMeshData = chunk.generate(grid, chunkSize, new cubed.VECTOR(x, y, z), voxelSize);
+          this.chunks.set(new cubed.VECTOR(x, y, z), chunk);
         }
       }
     };
-    return cubedObject;
   };
   return cubed;
 }());
