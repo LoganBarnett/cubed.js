@@ -399,6 +399,13 @@
 
     describe('helpers', function() {
     });
+
+    describe('external data', function() {
+      it('contains the type data assigned to it on creation', function() {
+        var voxel = new cubed.VOXEL('borg');
+        expect(voxel.voxelType).toEqual('borg');
+      });
+    });
   }); // describe voxel
 
 }(CUBED)); // define

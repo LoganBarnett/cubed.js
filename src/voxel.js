@@ -2,7 +2,8 @@
 
 CUBED = (function(cubed, _) {
 
-  var voxel = cubed.VOXEL = cubed.VOXEL || function() {
+  var voxel = cubed.VOXEL = cubed.VOXEL || function(voxelType) {
+    this.voxelType = voxelType;
   };
 
   var FIRST_TRIANGLES  = [0, 1, 2];
