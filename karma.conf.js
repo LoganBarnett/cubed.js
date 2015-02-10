@@ -2,7 +2,7 @@
 
 module.exports = function(config) {
   config.set({
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
     files: [
       'node_modules/lodash/dist/lodash.js'
       , 'src/cubed.js', 'src/**/*.js'
