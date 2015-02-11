@@ -6,7 +6,7 @@
     "Logan Barnett <logustus@gmail.com>"
   ],
   "description": "A Javascript voxel library",
-  "main": ["src/cubed.js", "src/chunk.js", "src/voxel.js", "src/vector.js", "src/grid.js"],
+  "main": ["src/cubed.js", "src/chunk.js", "src/voxel.js", "src/vector.js", "src/grid.js", "src/voxelType.js"],
   "moduleType": [
     "globals"
   ],

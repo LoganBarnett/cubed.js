@@ -1,8 +1,16 @@
 'use strict';
 
 (function(cubed) {
-  var grid = cubed.GRID = cubed.GRID || function(size) {
+  var grid = cubed.GRID = cubed.GRID || function(size, voxelTypes) {
     this.size = size;
+    if(voxelTypes) {
+      this.voxelTypes = voxelTypes;
+      this.voxelTypesLookup = {};
+      voxelTypes.forEach(function(v) { this.voxelTypesLookup[v.name] = v; }, this);
+    }
+    else {
+      this.voxelTypes = [];
+    }
     this.g = new Array(size.x);
     for(var x = 0; x < this.g.length; ++x) {
       var yArray = this.g[x] = new Array(size.y);

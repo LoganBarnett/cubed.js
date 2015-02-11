@@ -1,0 +1,14 @@
+'use strict';
+
+describe('VoxelType', function() {
+  it('takes a name', function() {
+    var voxelType = new CUBED.VoxelType('foo');
+
+    expect(voxelType.name).toEqual('foo');
+  });
+
+  it('takes misc data', function() {
+    var voxelType = new CUBED.VoxelType('foo', {herp: 'derp'});
+    expect(voxelType.data).toEqual({herp: 'derp'});
+  });
+});

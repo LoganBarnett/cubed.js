@@ -5,21 +5,21 @@ CUBED = (function(cubed) {
   };
 
   chunk.prototype.generate = function(grid, chunkSize, chunkOffset, voxelSize) {
+
     var chunkMeshData = {
         vertexes: []
       , triangles: []
       , uvs: []
     };
-
     var vertexCount = 0;
 
     for(var x = 0; x < chunkSize.x; ++x) {
       for(var y = 0; y < chunkSize.y; ++y) {
         for(var z = 0; z < chunkSize.z; ++z) {
           var coords = new cubed.VECTOR(x + (chunkOffset.x * chunkSize.x), y + (chunkOffset.y * chunkSize.y),z + (chunkOffset.z * chunkSize.z));
-          var voxelData = grid.get(coords);
-          if(voxelData == null) continue;
-          var voxelMeshData = voxelData.generate(grid, coords, voxelSize, vertexCount);
+          var voxel = grid.get(coords);
+          if(voxel == null) continue;
+          var voxelMeshData = voxel.generate(grid, coords, voxelSize, vertexCount);
           vertexCount = voxelMeshData.vertexCount;
           chunkMeshData.vertexes = chunkMeshData.vertexes.concat(voxelMeshData.renderMesh);
 
