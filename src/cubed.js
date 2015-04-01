@@ -5,7 +5,7 @@ var CUBED = (function() {
   var cubed = function() {
   };
 
-  cubed.prototype.generate = function (grid, chunkSize, voxelSize) {
+  cubed.prototype.generate = function(grid, chunkSize, voxelSize, voxelTypes) {
     this.chunkSize = chunkSize;
     var chunkXLength = parseInt(grid.size.x / chunkSize.x);
     var chunkYLength = parseInt(grid.size.y / chunkSize.y);
@@ -16,11 +16,11 @@ var CUBED = (function() {
     if(grid.size.z % chunkSize.z != 0) ++chunkZLength;
 
     var chunkDimensions = new cubed.VECTOR(chunkXLength, chunkYLength, chunkZLength);
-    this.chunks = new cubed.GRID(chunkDimensions);
+    this.chunks = new cubed.GRID(chunkDimensions, voxelTypes);
 
-    for (var x = 0; x < chunkXLength; ++x) {
-      for (var y = 0; y < chunkYLength; ++y) {
-        for (var z = 0; z < chunkZLength; ++z) {
+    for(var x = 0; x < chunkXLength; ++x) {
+      for(var y = 0; y < chunkYLength; ++y) {
+        for(var z = 0; z < chunkZLength; ++z) {
           var chunk = new cubed.CHUNK();
           var chunkMeshData = chunk.generate(grid, chunkSize, new cubed.VECTOR(x, y, z), voxelSize);
           this.chunks.set(new cubed.VECTOR(x, y, z), chunk);
@@ -28,5 +28,6 @@ var CUBED = (function() {
       }
     };
   };
+
   return cubed;
 }());

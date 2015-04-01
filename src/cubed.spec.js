@@ -60,5 +60,19 @@
       expect(chunk.mesh.vertexes.length).toBe(24);
     });
 
+    it('accepts voxel types to use for generation', function() {
+      var grid = new cubed.GRID(new cubed.VECTOR(1, 1, 1));
+      var cubedObject = new cubed();
+      var voxelType = new cubed.VoxelType('test type');
+      var voxelTypes = [voxelType];
+
+      grid.set(new cubed.VECTOR(0, 0, 0), new cubed.VOXEL(voxelType));
+
+      cubedObject.generate(grid, new cubed.VECTOR(16, 16, 16), 1, voxelTypes);
+
+      expect(cubedObject.chunks.voxelTypes.length).toEqual(1);
+      expect(cubedObject.chunks.voxelTypes[0]).toEqual(voxelType);
+    });
+
   });
 }(CUBED));
