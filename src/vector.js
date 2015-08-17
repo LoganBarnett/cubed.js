@@ -2,32 +2,34 @@
 
 (function(cubed) {
 
-  var vector = cubed.VECTOR = cubed.VECTOR || function(x, y, z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+  var vector = cubed.vector = {};
+
+  vector.left = function(vector) {
+    return {x: vector.x - 1, y: vector.y, z: vector.z};
+  };
+  vector.right = function(vector) {
+    return {x: vector.x + 1, y: vector.y, z: vector.z};
+  };
+  vector.front = function(vector) {
+    return {x: vector.x, y: vector.y, z: vector.z + 1};
+  };
+  vector.back = function(vector) {
+    return {x: vector.x, y: vector.y, z: vector.z - 1};
+  };
+  vector.top = function(vector) {
+    return {x: vector.x, y: vector.y + 1, z: vector.z};
+  };
+  vector.bottom = function(vector) {
+    return {x: vector.x, y: vector.y - 1, z: vector.z};
   };
 
-  vector.prototype.left = function() {
-    return new cubed.VECTOR(this.x - 1, this.y, this.z);
-  }
-  vector.prototype.right = function() {
-    return new cubed.VECTOR(this.x + 1, this.y, this.z);
-  };
-  vector.prototype.front = function() {
-    return new cubed.VECTOR(this.x, this.y, this.z + 1);
-  };
-  vector.prototype.back = function() {
-    return new cubed.VECTOR(this.x, this.y, this.z - 1);
-  };
-  vector.prototype.top = function() {
-    return new cubed.VECTOR(this.x, this.y + 1, this.z);
-  };
-  vector.prototype.bottom = function() {
-    return new cubed.VECTOR(this.x, this.y - 1, this.z);
+  vector.isValid = function(vector) {
+    if(vector.x == null || vector.y == null || vector.z == null) {
+      return false;
+    }
+    return true;
   };
 
-  vector.prototype.toString = function() {
-    return '{x: ' + this.x + ', y: ' + this.y + ', z: ' + this.z + '}';
-  };
-}(CUBED));
+  cubed.reportSubmoduleReady('vector');
+
+}(cubed));

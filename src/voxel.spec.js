@@ -7,14 +7,13 @@
   describe('voxel', function() {
     describe('mesh generation', function() {
       it('generates a normal render mesh when there are no neighbors', function() {
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 3));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
+        var voxels = [{position: {x: 1, y: 1, z: 1}, voxel: {}}];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});
 
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 1, 0);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
         expect(meshData.renderMesh).toBeTruthy();
         // bottom
-        expect(meshData.renderMesh[0]).toEqual(new cubed.VECTOR(2, 1, 1));
+        expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
         expect(meshData.renderMesh[1]).toEqual({x: 2, y: 1, z: 2});
         expect(meshData.renderMesh[2]).toEqual({x: 1, y: 1, z: 1});
         expect(meshData.renderMesh[3]).toEqual({x: 1, y: 1, z: 2});
@@ -46,13 +45,13 @@
       });
 
       it('omits generating a left side on the render mesh when there is a neighbor to the left', function() {
+        var voxels = [
+            {position: {x: 1, y: 1, z: 1}, voxel: {}}
+          , {position: {x: 0, y: 1, z: 1}, voxel: {}}
+        ];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});
 
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 3));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
-        grid.set(new cubed.VECTOR(0, 1, 1), {});
-
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 1, 0);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
         expect(meshData.renderMesh).toBeTruthy();
         // bottom
         expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -82,12 +81,13 @@
       });
 
       it('omits generating a bottom side on the render mesh when there is a neighbor to the bottom', function() {
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 3));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
-        grid.set(new cubed.VECTOR(1, 0, 1), {});
+        var voxels = [
+            {position: {x: 1, y: 1, z: 1}, voxel: {}}
+          , {position: {x: 1, y: 0, z: 1}, voxel: {}}
+        ];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});
 
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 1, 0);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
         expect(meshData.renderMesh).toBeTruthy();
         // top
         expect(meshData.renderMesh[0]).toEqual({x: 1, y: 2, z: 1});
@@ -117,12 +117,13 @@
       });
 
       it('omits generating a top side on the render mesh when there is a neighbor to the top', function() {
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 3));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
-        grid.set(new cubed.VECTOR(1, 2, 1), {});
+        var voxels = [
+            {position: {x: 1, y: 1, z: 1}, voxel: {}}
+          , {position: {x: 1, y: 2, z: 1}, voxel: {}}
+        ];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});
 
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 1, 0);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
         expect(meshData.renderMesh).toBeTruthy();
         // bottom
         expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -152,12 +153,13 @@
       });
 
       it('omits generating a right side on the render mesh when there is a neighbor to the right', function() {
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 3));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
-        grid.set(new cubed.VECTOR(2, 1, 1), {});
+        var voxels = [
+            {position: {x: 1, y: 1, z: 1}, voxel: {}}
+          , {position: {x: 2, y: 1, z: 1}, voxel: {}}
+        ];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});
 
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 1, 0);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
         expect(meshData.renderMesh).toBeTruthy();
         // bottom
         expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -187,12 +189,13 @@
       });
 
       it('omits generating a front side on the render mesh when there is a neighbor to the front', function() {
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 3));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
-        grid.set(new cubed.VECTOR(1, 1, 2), {});
+        var voxels = [
+            {position: {x: 1, y: 1, z: 1}, voxel: {}}
+          , {position: {x: 1, y: 1, z: 2}, voxel: {}}
+        ];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});
 
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 1, 0);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
         expect(meshData.renderMesh).toBeTruthy();
         // bottom
         expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -222,12 +225,13 @@
       });
 
       it('omits generating a back side on the render mesh when there is a neighbor to the back', function() {
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 3));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
-        grid.set(new cubed.VECTOR(1, 1, 0), {});
+        var voxels = [
+            {position: {x: 1, y: 1, z: 1}, voxel: {}}
+          , {position: {x: 1, y: 1, z: 0}, voxel: {}}
+        ];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});
 
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 1, 0);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
         expect(meshData.renderMesh).toBeTruthy();
         // bottom
         expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -259,11 +263,10 @@
       });
 
       it('generates a visible render mesh on the edge side when the voxel is on the edge of the grid', function() {
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 2));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
+        var voxels = [{position: {x: 1, y: 1, z: 1}, voxel: {}}];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 2}, values: voxels});
 
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 1, 0);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 1, 0);
         expect(meshData.renderMesh).toBeTruthy();
         // bottom
         expect(meshData.renderMesh[0]).toEqual({x: 2, y: 1, z: 1});
@@ -298,11 +301,10 @@
       });
 
       it('scales the voxel dimensions based on the voxelSize', function() {
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 3));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
+        var voxels = [{position: {x: 1, y: 1, z: 1}, voxel: {}}];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});
 
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 2, 0);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 2, 0);
         expect(meshData.renderMesh).toBeTruthy();
         // bottom
         expect(meshData.renderMesh[0]).toEqual({x: 4, y: 2, z: 2});
@@ -337,11 +339,10 @@
       });
 
       it('generates triangles from the sides', function() {
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 3));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
+        var voxels = [{position: {x: 1, y: 1, z: 1}, voxel: {}}];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});
 
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 2, 0);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 2, 0);
         expect(meshData.triangles).toBeTruthy();
         // bottom
         expect(meshData.triangles).toEqual(
@@ -357,11 +358,10 @@
       });
 
       it('generates uvs from verteces', function() {
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 3));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
+        var voxels = [{position: {x: 1, y: 1, z: 1}, voxel: {}}];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});
 
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 2, 0);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 2, 0);
         expect(meshData.uvs).toBeTruthy();
         // just look at one side for this test
         expect(meshData.uvs[0][0]).toEqual({u: 0, v: 0});
@@ -374,21 +374,19 @@
       });
 
       it('accumulates a vertex count', function() {
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 3));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
+        var voxels = [{position: {x: 1, y: 1, z: 1}, voxel: {}}];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});
 
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 2, 0);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 2, 0);
         expect(meshData.vertexCount).toBeTruthy();
         expect(meshData.vertexCount).toEqual(4 * 6);
       });
 
       it('offsets triangle indicies by the vertex count', function() {
-        var grid = new cubed.GRID(new cubed.VECTOR(3, 3, 3));
-        grid.set(new cubed.VECTOR(1, 1, 1), {});
+        var voxels = [{position: {x: 1, y: 1, z: 1}, voxel: {}}];
+        var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});
 
-        var voxel = new cubed.VOXEL();
-        var meshData = voxel.generate(grid, new cubed.VECTOR(1, 1, 1), 2, 4);
+        var meshData = cubed.voxel.generate(grid, {x: 1, y: 1, z: 1}, 2, 4);
 
         expect(meshData.triangles).toBeTruthy();
         // bottom
@@ -397,15 +395,6 @@
       });
     }); // describe generation
 
-    describe('helpers', function() {
-    });
-
-    describe('external data', function() {
-      it('contains the type data assigned to it on creation', function() {
-        var voxel = new cubed.VOXEL('borg');
-        expect(voxel.voxelType).toEqual('borg');
-      });
-    });
   }); // describe voxel
 
-}(CUBED)); // define
+}(cubed)); // define

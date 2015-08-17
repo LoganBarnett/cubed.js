@@ -2,13 +2,13 @@
 
 describe('VoxelType', function() {
   it('takes a name', function() {
-    var voxelType = new CUBED.VoxelType('foo');
+    var voxelType = new cubed.VoxelType('foo');
 
     expect(voxelType.name).toEqual('foo');
   });
 
   it('takes misc data', function() {
-    var voxelType = new CUBED.VoxelType('foo', {herp: 'derp'});
+    var voxelType = new cubed.VoxelType('foo', {herp: 'derp'});
     expect(voxelType.data).toEqual({herp: 'derp'});
   });
 });

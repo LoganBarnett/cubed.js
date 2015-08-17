@@ -1,8 +1,9 @@
 {
   "name": "cubed",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": "0.10.32",
   "author": "Logan Barnett",
+  "repository": "git@github.com:LoganBarnett/cubed.js.git",
   "main": "src/cubed.js",
   "description": "A Javascript voxel library",
   "devDependencies": {

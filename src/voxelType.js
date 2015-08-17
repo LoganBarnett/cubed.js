@@ -7,4 +7,4 @@
     this.data = data;
   };
 
-}(CUBED));
+}(cubed));

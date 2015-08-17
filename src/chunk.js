@@ -1,10 +1,9 @@
 'use strict';
 
-CUBED = (function(cubed) {
-  var chunk = cubed.CHUNK = cubed.CHUNK || function() {
-  };
+var cubed = (function(cubed) {
+  var chunk = cubed.chunk = {};
 
-  chunk.prototype.generate = function(grid, chunkSize, chunkOffset, voxelSize) {
+  chunk.generate = function(grid, chunkSize, chunkOffset, voxelSize) {
 
     var chunkMeshData = {
         vertexes: []
@@ -16,10 +15,15 @@ CUBED = (function(cubed) {
     for(var x = 0; x < chunkSize.x; ++x) {
       for(var y = 0; y < chunkSize.y; ++y) {
         for(var z = 0; z < chunkSize.z; ++z) {
-          var coords = new cubed.VECTOR(x + (chunkOffset.x * chunkSize.x), y + (chunkOffset.y * chunkSize.y),z + (chunkOffset.z * chunkSize.z));
-          var voxel = grid.get(coords);
+          var coords = {
+              x: x + (chunkOffset.x * chunkSize.x)
+            , y: y + (chunkOffset.y * chunkSize.y)
+            , z: z + (chunkOffset.z * chunkSize.z)
+          };
+          var voxel = cubed.grid.get(grid, coords);
+
           if(voxel == null) continue;
-          var voxelMeshData = voxel.generate(grid, coords, voxelSize, vertexCount);
+          var voxelMeshData = cubed.voxel.generate(grid, coords, voxelSize, vertexCount);
           vertexCount = voxelMeshData.vertexCount;
           chunkMeshData.vertexes = chunkMeshData.vertexes.concat(voxelMeshData.renderMesh);
 
@@ -30,9 +34,10 @@ CUBED = (function(cubed) {
       }
     }
 
-    this.mesh = chunkMeshData;
     return chunkMeshData;
   };
 
+  cubed.reportSubmoduleReady('chunk');
+
   return cubed;
-}(CUBED));
+}(cubed));
