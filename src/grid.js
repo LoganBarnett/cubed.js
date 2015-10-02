@@ -52,6 +52,30 @@ grid.create = function(args) {
   return g;
 };
 
+grid.set = (g, p, v) => {
+  if(!grid.isInBounds(g, p)) {
+    return g;
+  }
+  const cells = grid.flatten(g);
+  // TODO: Handle out of bounds
+  const removed = R.drop(({position, value}) => p == position, cells);
+  const added = R.append({position: p, value: v}, removed);
+  return grid.create({size: grid.getSize(g), values: added});
+};
+
+grid.isInBounds = (g, p) => {
+  const size = grid.getSize(g);
+  if(p.x < 0 || p.y < 0 || p.z < 0) {
+    return false;
+  }
+  else if(size.x > p.x && size.y > p.y && size.z > p.z) {
+    return true;
+  }
+  else {
+    return false;
+  }
+};
+
 grid.get = function(g, position) {
   var xArray = g[position.x];
   if(xArray == null) return null;
@@ -137,6 +161,7 @@ grid.getIterator = function(g) {
   return iterator;
 };
 
+// gives back a flat list of {position, value} for each cell
 grid.flatten = function(g) {
   var values = [];
   var iterator = grid.getIterator(g);
