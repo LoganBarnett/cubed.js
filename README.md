@@ -9,9 +9,9 @@ Some example usage:
 
 ```javascript
 var voxels = [
-    {position: {x: 0, y: 0, z: 0}, voxel: 'foo'}
-  , {position: {x: 1, y: 0, z: 0}, voxel: 'foo'}
-  , {position: {x: 0, y: 1, z: 0}, voxel: 'foo'}
+    {position: {x: 0, y: 0, z: 0}, value: 'foo'}
+  , {position: {x: 1, y: 0, z: 0}, value: 'foo'}
+  , {position: {x: 0, y: 1, z: 0}, value: 'foo'}
 ];
 // create a grid of voxels that's 3x3x3 (27 total voxels)
 var grid = cubed.grid.create({size: {x: 3, y: 3, z: 3}, values: voxels});

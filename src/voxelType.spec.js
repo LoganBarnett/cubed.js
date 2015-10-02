@@ -1,6 +1,6 @@
 'use strict';
 
-describe('VoxelType', function() {
+xdescribe('VoxelType', function() {
   it('takes a name', function() {
     var voxelType = new cubed.VoxelType('foo');
 
