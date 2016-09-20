@@ -10,6 +10,8 @@
     "test": "jasmine JASMINE_CONFIG_PATH=jasmine.json"
   },
   "devDependencies": {
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.5.0",
     "jasmine-es6": "0.0.18"
   },
   "dependencies": {
