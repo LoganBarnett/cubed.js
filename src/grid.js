@@ -77,18 +77,24 @@ grid.isInBounds = (g, p) => {
 };
 
 grid.get = function(g, position) {
+  if(!grid.isInBounds(g, position)) return null;
   var xArray = g[position.x];
-  if(xArray == null) return null;
+  if(xArray === null) return null;
   var yArray = xArray[position.y];
-  if(yArray == null) return null;
+  if(yArray === null) return null;
   return yArray[position.z];
 };
 
 grid.getSize = function(g) {
-  var x = g.length;
-  var y = g[0].length;
-  var z = g[0][0].length;
-  return {x: x, y: y, z: z};
+  if(g != null && g[0] != null && g[0][0] != null) {
+    var x = g.length;
+    var y = g[0].length;
+    var z = g[0][0].length;
+    return {x: x, y: y, z: z};
+  }
+  else {
+    return { x: 0, y: 0, z: 0 };
+  }
 };
 
 grid.generate = function(g, chunkSize, voxelSize, voxelTypes) {
@@ -189,6 +195,23 @@ grid.merge = function(finalGrid, currentGrid) {
   var newGrid = grid.create({size: grid.getSize(finalGrid), values: values})
   return newGrid;
 };
+
+grid.blit = R.curry((target, offset, source) => {
+  const newValues = R.map((cell) => {
+    const offsetCellPosition = vector.plus(cell.position, offset)
+    const newCell = { value: cell.value, position: offsetCellPosition }
+    return newCell
+  }, grid.flatten(source))
+  const targetValues = grid.flatten(target)
+  R.each(({ position, value }) => {
+    targetValues[position.x][position.y][position.z] = { position, value }
+  }, newValues)
+  const newGrid = grid.create({
+    size: grid.getSize(target),
+    values: targetValues
+  })
+  return newGrid
+})
 
 
 module.exports = grid;
