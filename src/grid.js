@@ -225,7 +225,6 @@ grid.blit = R.curry((emptyCell, target, offset, source) => {
     return a.value.name != emptyCell.name
   }, newValues)
   R.forEach(({ position, value }) => {
-    // targetValues[position.x][position.y][position.z] = { position, value }
     const t = R.find((gridVal) => gridVal.position == position, targetValues)
     if(t) {
       t.value = value
@@ -234,7 +233,7 @@ grid.blit = R.curry((emptyCell, target, offset, source) => {
       targetValues.push({ position, value })
     }
   }, presentNewValues)
-  // console.log('size', grid.getSize(target))
+
   const newGrid = grid.create({
     size: grid.getSize(target),
     fillEmptyWith: emptyCell,
