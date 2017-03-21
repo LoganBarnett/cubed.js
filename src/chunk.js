@@ -3,7 +3,7 @@
 const voxel = require('./voxel');
 const chunk = {};
 
-chunk.generate = function(g, getterFn, chunkSize, chunkOffset, voxelSize) {
+chunk.generate = (emptyCell, g, getterFn, chunkSize, chunkOffset, voxelSize) => {
 
   var chunkMeshData = {
       vertexes: []
@@ -22,7 +22,7 @@ chunk.generate = function(g, getterFn, chunkSize, chunkOffset, voxelSize) {
         };
         // var voxel = cubed.grid.get(grid, coords);
 
-        var voxelMeshData = voxel.generate(g, getterFn, coords, voxelSize, vertexCount);
+        var voxelMeshData = voxel.generate(emptyCell, g, getterFn, coords, voxelSize, vertexCount);
         vertexCount = voxelMeshData.vertexCount;
         chunkMeshData.vertexes = chunkMeshData.vertexes.concat(voxelMeshData.renderMesh);
 

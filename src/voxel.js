@@ -47,10 +47,10 @@ voxel.sidedMeshes = {
   ]
 };
 
-voxel.generate = function(g, getterFn, coords, voxelSize, vertexCount) {
+voxel.generate = (emptyCell, g, getterFn, coords, voxelSize, vertexCount) => {
   var meshData = {renderMesh: [], triangles: [], uvs: [], vertexCount: vertexCount};
   var v = getterFn(g, coords);
-  if(v == null) {
+  if(v === emptyCell) {
     return meshData;
   }
 
@@ -59,7 +59,7 @@ voxel.generate = function(g, getterFn, coords, voxelSize, vertexCount) {
   // TODO: Reduce candidate?
   sideNames.forEach(function(sideName) {
     var sideCoords = vector[sideName](coords);
-    if(!getterFn(g, sideCoords)) {
+    if(getterFn(g, sideCoords) === emptyCell) {
       var sideVertexes = R.map(function(vertex) {
         var result = {x: (vertex.x + coords.x) * voxelSize, y: (vertex.y + coords.y) * voxelSize, z: (vertex.z + coords.z) * voxelSize};
         return result;
@@ -77,5 +77,12 @@ voxel.generate = function(g, getterFn, coords, voxelSize, vertexCount) {
 
   return meshData;
 };
+
+voxel.identity = {
+  renderMesh: [],
+  triangles: [],
+  uvs: [],
+  vertexCount: 0,
+}
 
 module.exports = voxel;

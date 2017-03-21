@@ -32,4 +32,6 @@ vector.plus = (a, b) => {
   return { x: a.x + b.x, y: a.y + b.y, z: a.z + b.z }
 }
 
+vector.identity = { x: 0, y: 0, z: 0 }
+
 module.exports = vector;

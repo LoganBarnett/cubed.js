@@ -33,13 +33,14 @@ grid.create = function(args) {
   //else {
   //  this.voxelTypes = [];
   //}
+  const fillEmptyWith = args.fillEmptyWith == null ? null : args.fillEmptyWith
   var g = new Array(size.x);
   for(var x = 0; x < g.length; ++x) {
     var yArray = g[x] = new Array(size.y);
     for(var y = 0; y < yArray.length; ++y) {
       var zArray = yArray[y] = new Array(size.z);
       for(var z = 0; z < zArray.length; ++z) {
-        zArray[z] = null;
+        zArray[z] = fillEmptyWith
       }
     }
   }
@@ -52,15 +53,19 @@ grid.create = function(args) {
   return g;
 };
 
-grid.set = (g, p, v) => {
+grid.set = (emptyCell, g, p, v) => {
   if(!grid.isInBounds(g, p)) {
     return g;
   }
-  const cells = grid.flatten(g);
+  const cells = grid.flatten(emptyCell, g);
   // TODO: Handle out of bounds
   const removed = R.drop(({position, value}) => p == position, cells);
   const added = R.append({position: p, value: v}, removed);
-  return grid.create({size: grid.getSize(g), values: added});
+  return grid.create({
+    size: grid.getSize(g),
+    values: added,
+    fillWithEmpty: emptyCell,
+  });
 };
 
 grid.isInBounds = (g, p) => {
@@ -76,12 +81,12 @@ grid.isInBounds = (g, p) => {
   }
 };
 
-grid.get = function(g, position) {
-  if(!grid.isInBounds(g, position)) return null;
+grid.get = function(emptyCell, g, position) {
+  if(!grid.isInBounds(g, position)) return emptyCell;
   var xArray = g[position.x];
-  if(xArray === null) return null;
+  if(xArray === null) return emptyCell;
   var yArray = xArray[position.y];
-  if(yArray === null) return null;
+  if(yArray === null) return emptyCell;
   return yArray[position.z];
 };
 
@@ -97,7 +102,7 @@ grid.getSize = function(g) {
   }
 };
 
-grid.generate = function(g, chunkSize, voxelSize, voxelTypes) {
+grid.generate = (emptyCell, g, chunkSize, voxelSize, voxelTypes) => {
   var gridSize = grid.getSize(g);
   var chunkXLength = parseInt(gridSize.x / chunkSize.x);
   var chunkYLength = parseInt(gridSize.y / chunkSize.y);
@@ -110,11 +115,19 @@ grid.generate = function(g, chunkSize, voxelSize, voxelTypes) {
 
   var chunkDimensions = {x: chunkXLength, y: chunkYLength, z: chunkZLength};
   var chunks = [];
+  const get = R.curry(grid.get)(emptyCell)
   for(var x = 0; x < chunkXLength; ++x) {
     for(var y = 0; y < chunkYLength; ++y) {
       for(var z = 0; z < chunkZLength; ++z) {
         var position = {x: x, y: y, z: z};
-        var chunkMeshData = chunk.generate(g, grid.get, chunkSize, position, voxelSize);
+        var chunkMeshData = chunk.generate(
+          emptyCell,
+          g,
+          get,
+          chunkSize,
+          position,
+          voxelSize
+        );
         chunks.push({position: position, value: chunkMeshData});
       }
     }
@@ -123,7 +136,7 @@ grid.generate = function(g, chunkSize, voxelSize, voxelTypes) {
   return chunkGrid;
 };
 
-grid.getIterator = function(g) {
+grid.getIterator = (emptyCell, g) => {
   var iterator = {};
 // TODO: Polyfill this or something
   iterator[Symbol.iterator] = function() {
@@ -138,8 +151,8 @@ grid.getIterator = function(g) {
     var done = lastCell;
     if(done) {
       return {
-          done: true
-        , value: null
+        done: true,
+        value: emptyCell,
       };
     }
     else {
@@ -156,7 +169,7 @@ grid.getIterator = function(g) {
           }
         }
       }
-      var cellValue = grid.get(g, position);
+      var cellValue = grid.get(emptyCell, g, position);
       var iteration = {
         done:    done
         , value: {position: position, value: cellValue}
@@ -168,9 +181,9 @@ grid.getIterator = function(g) {
 };
 
 // gives back a flat list of {position, value} for each cell
-grid.flatten = function(g) {
+grid.flatten = (emptyCell, g) => {
   var values = [];
-  var iterator = grid.getIterator(g);
+  var iterator = grid.getIterator(emptyCell, g);
   while(true) {
     var value = iterator.next();
     if(value.done) {
@@ -183,35 +196,53 @@ grid.flatten = function(g) {
 
 
 var logged = false;
-grid.merge = function(finalGrid, currentGrid) {
+grid.merge = (emptyCell, finalGrid, currentGrid) => {
   // it appears lodash doesn't work with the new iterator...
   //const voxels = _.map(grid.getIterator(finalGrid), ({position, voxel}) => {
   var values = R.map(function(cell) {
     var position = cell.position;
     var value = cell.value;
-    var newValue = grid.get(currentGrid, position) || value;
+    const currentValue = grid.get(emptyCell, currentGrid, position);
+    const newValue = currentValue === emptyCell ? value : currentValue
     return {position: position, value: newValue};
-  }, grid.flatten(finalGrid));
-  var newGrid = grid.create({size: grid.getSize(finalGrid), values: values})
-  return newGrid;
-};
+  }, grid.flatten(emptyCell, finalGrid));
+  var newGrid = grid.create({
+    size: grid.getSize(finalGrid),
+    values: values,
+    fillEmptyWith: emptyCell,
+  })
+  return newGrid
+}
 
-grid.blit = R.curry((target, offset, source) => {
+grid.blit = R.curry((emptyCell, target, offset, source) => {
   const newValues = R.map((cell) => {
     const offsetCellPosition = vector.plus(cell.position, offset)
     const newCell = { value: cell.value, position: offsetCellPosition }
     return newCell
-  }, grid.flatten(source))
-  const targetValues = grid.flatten(target)
-  R.each(({ position, value }) => {
-    targetValues[position.x][position.y][position.z] = { position, value }
+  }, grid.flatten(emptyCell, source))
+  const targetValues = grid.flatten(emptyCell, target)
+  const presentNewValues = R.filter((a) => {
+    return a.value.name != emptyCell.name
   }, newValues)
+  R.forEach(({ position, value }) => {
+    // targetValues[position.x][position.y][position.z] = { position, value }
+    const t = R.find((gridVal) => gridVal.position == position, targetValues)
+    if(t) {
+      t.value = value
+    }
+    else {
+      targetValues.push({ position, value })
+    }
+  }, presentNewValues)
+  // console.log('size', grid.getSize(target))
   const newGrid = grid.create({
     size: grid.getSize(target),
-    values: targetValues
+    fillEmptyWith: emptyCell,
+    values: targetValues,
   })
   return newGrid
 })
 
+grid.identity = getIdentity()
 
-module.exports = grid;
+module.exports = grid
