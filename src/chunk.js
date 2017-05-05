@@ -3,7 +3,15 @@
 const voxel = require('./voxel');
 const chunk = {};
 
-chunk.generate = (emptyCell, g, getterFn, chunkSize, chunkOffset, voxelSize) => {
+chunk.generate = (
+  matIndex,
+  emptyCell,
+  g,
+  getterFn,
+  chunkSize,
+  chunkOffset,
+  voxelSize
+) => {
 
   var chunkMeshData = {
       vertexes: []
@@ -22,7 +30,18 @@ chunk.generate = (emptyCell, g, getterFn, chunkSize, chunkOffset, voxelSize) => 
         };
         // var voxel = cubed.grid.get(grid, coords);
 
-        var voxelMeshData = voxel.generate(emptyCell, g, getterFn, coords, voxelSize, vertexCount);
+        const voxelMeshData = voxel.generate(
+          matIndex,
+          emptyCell,
+          g,
+          getterFn,
+          coords,
+          voxelSize,
+          vertexCount
+        )
+        // TODO: Build up a material index list here. Maybe have the index apply
+        // as a list of numbers, with the expectation that it corresponds with
+        // the triads of triangle indexes (triangles).
         vertexCount = voxelMeshData.vertexCount;
         chunkMeshData.vertexes = chunkMeshData.vertexes.concat(voxelMeshData.renderMesh);
 

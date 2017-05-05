@@ -47,12 +47,27 @@ voxel.sidedMeshes = {
   ]
 };
 
-voxel.generate = (emptyCell, g, getterFn, coords, voxelSize, vertexCount) => {
-  var meshData = {renderMesh: [], triangles: [], uvs: [], vertexCount: vertexCount};
+voxel.generate = (
+  matIndex,
+  emptyCell,
+  g,
+  getterFn,
+  coords,
+  voxelSize,
+  vertexCount
+) => {
+  var meshData = {
+    materialIndex: -1,
+    renderMesh: [],
+    triangles: [],
+    uvs: [],
+    vertexCount: vertexCount,
+  }
   var v = getterFn(g, coords);
   if(v === emptyCell) {
     return meshData;
   }
+  meshData.materialIndex = matIndex(coords, v)
 
   var sideNames = ['bottom', 'top', 'right', 'left', 'front', 'back'];
 

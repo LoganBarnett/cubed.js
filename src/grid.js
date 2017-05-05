@@ -102,7 +102,7 @@ grid.getSize = function(g) {
   }
 };
 
-grid.generate = (emptyCell, g, chunkSize, voxelSize, voxelTypes) => {
+grid.generate = (matIndex, emptyCell, g, chunkSize, voxelSize, voxelTypes) => {
   var gridSize = grid.getSize(g);
   var chunkXLength = parseInt(gridSize.x / chunkSize.x);
   var chunkYLength = parseInt(gridSize.y / chunkSize.y);
@@ -121,6 +121,7 @@ grid.generate = (emptyCell, g, chunkSize, voxelSize, voxelTypes) => {
       for(var z = 0; z < chunkZLength; ++z) {
         var position = {x: x, y: y, z: z};
         var chunkMeshData = chunk.generate(
+          matIndex,
           emptyCell,
           g,
           get,
