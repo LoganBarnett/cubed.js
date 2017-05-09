@@ -57,7 +57,7 @@ voxel.generate = (
   vertexCount
 ) => {
   var meshData = {
-    materialIndex: -1,
+    materialIndexes: [],
     renderMesh: [],
     triangles: [],
     uvs: [],
@@ -67,7 +67,6 @@ voxel.generate = (
   if(v === emptyCell) {
     return meshData;
   }
-  meshData.materialIndex = matIndex(coords, v)
 
   var sideNames = ['bottom', 'top', 'right', 'left', 'front', 'back'];
 
@@ -80,6 +79,7 @@ voxel.generate = (
         return result;
       }, voxel.sidedMeshes[sideName]);
 
+      meshData.materialIndexes.push(matIndex(coords, sideName, v))
       meshData.renderMesh = meshData.renderMesh.concat(sideVertexes);
       meshData.triangles.push(R.map( function(t) { return t + meshData.vertexCount; }, voxel.FIRST_TRIANGLES));
       meshData.triangles.push(R.map(function(t) { return t + meshData.vertexCount; }, voxel.SECOND_TRIANGLES));

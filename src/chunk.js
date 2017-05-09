@@ -14,9 +14,10 @@ chunk.generate = (
 ) => {
 
   var chunkMeshData = {
-      vertexes: []
-    , triangles: []
-    , uvs: []
+    vertexes: [],
+    triangles: [],
+    uvs: [],
+    materialIndexes: [],
   };
   var vertexCount = 0;
 
@@ -43,6 +44,8 @@ chunk.generate = (
         // as a list of numbers, with the expectation that it corresponds with
         // the triads of triangle indexes (triangles).
         vertexCount = voxelMeshData.vertexCount;
+        chunkMeshData.materialIndexes = chunkMeshData.materialIndexes
+          .concat(voxelMeshData.materialIndexes)
         chunkMeshData.vertexes = chunkMeshData.vertexes.concat(voxelMeshData.renderMesh);
 
         chunkMeshData.triangles = chunkMeshData.triangles.concat(voxelMeshData.triangles);
