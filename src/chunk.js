@@ -1,19 +1,38 @@
-'use strict';
+// @flow
+
+import type { Grid, GetterFn } from './grid.js'
+import type { Triangle, Side } from './mesh.js'
+import type { Vector3, Vector2, Uv } from './vector.js'
+import type { Voxel } from './voxel.js'
 
 const voxel = require('./voxel');
 const chunk = {};
 
-chunk.generate = (
-  matIndex,
-  emptyCell,
-  g,
-  getterFn,
-  chunkSize,
-  chunkOffset,
-  voxelSize
-) => {
+export type Chunk = {
+  triangles: Array<Triangle>,
+  vertexes: Array<Vector3>,
+  uvs: Array<Array<Uv>>,
+  materialIndexes: Array<number>,
+}
 
-  var chunkMeshData = {
+chunk.empty = {
+  materialIndexes: [],
+  triangles: [],
+  uvs: [],
+  vertexes: [],
+}
+
+chunk.generate = <T>(
+  matIndex: (p: Vector3, s: Side, v: T) => number,
+  emptyCell: T,
+  g: Grid<T>,
+  getterFn: GetterFn<T>,
+  chunkSize: Vector3,
+  chunkOffset: Vector3,
+  voxelSize: number
+): Chunk => {
+
+  const chunkMeshData = {
     vertexes: [],
     triangles: [],
     uvs: [],

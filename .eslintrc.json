@@ -7,12 +7,17 @@
   },
   "ecmaFeatures": {
     "modules": true,
+    "jsx": true,
     "destructuring": true
   },
   "plugins": [
+    "react",
+    "flowtype"
   ],
   "globals": {
     "__ENV__": true,
+    "React$Element": true,
+    "ReactElement": true,
     "require": true,
     "it": true,
     "fit": true,
@@ -25,7 +30,7 @@
     "expect": true
   },
   "rules":
-    { "comma-dangle": [0, "never"]
+    { "comma-dangle": [0, "always-multiline"]
     , "no-cond-assign": [2, "always"]
     , "no-console": 0
     , "no-constant-condition": 2
