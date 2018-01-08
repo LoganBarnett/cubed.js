@@ -261,22 +261,22 @@ grid.blit = <T>(
     const newCell = { value: cell.value, position: offsetCellPosition }
     return newCell
   }, grid.flatten(emptyCell, source))
-  const targetValues = grid.flatten(emptyCell, target)
-  const presentNewValues = R.filter((a) => a.value === emptyCell, newValues)
+  const values = grid.flatten(emptyCell, source)
+  const presentNewValues = R.filter((a) => a.value !== emptyCell, newValues)
   R.forEach(({ position, value }) => {
-    const t = R.find((gridVal) => gridVal.position == position, targetValues)
+    const t = R.find((gridVal) => gridVal.position == position, values)
     if(t) {
       t.value = value
     }
     else {
-      targetValues.push({ position, value })
+      values.push({ position, value })
     }
   }, presentNewValues)
 
   const newGrid = grid.create({
     size: grid.getSize(target),
     fillEmptyWith: emptyCell,
-    values: targetValues,
+    values,
   })
   return newGrid
 }
