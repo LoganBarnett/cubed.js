@@ -4,7 +4,17 @@ import type { Vector3 } from './vector.js'
 import type { Side } from './mesh.js'
 import type { Chunk } from './chunk.js'
 
-const R = require('ramda');
+import {
+  append,
+  concat,
+  filter,
+  find,
+  findIndex,
+  forEach,
+  map,
+  reduce,
+  update,
+} from 'ramda'
 
 const vector = require('./vector');
 const chunk = require('./chunk');
@@ -27,21 +37,21 @@ grid.getIdentity = <T>(emptyCell: T): Grid<T> => {
 }
 
 type GridArgs<T> = {
-  size?: Vector3,
+  size: Vector3,
   // voxelTypes?: Array,
   fillEmptyWith: T,
-  values?: Array<GridCell<T>>,
+  values: Array<GridCell<T>>,
 }
 
 grid.create = <T>(args: GridArgs<T>): Grid<T> => {
-  var size = args.size;
+  const size = args.size
   if(size == null) {
     return grid.getIdentity(args.fillEmptyWith);
   }
-  if(args.size == null || !vector.isValid(args.size)) {
-    return grid.getIdentity(args.fillEmptyWith);
+  if(!vector.isValid(args.size)) {
+    return grid.getIdentity(args.fillEmptyWith)
   }
-  var values = args.values || [];
+  const values = args.values
   var g = new Array(size.x);
   for(var x = 0; x < g.length; ++x) {
     var yArray = g[x] = new Array(size.y);
@@ -53,13 +63,13 @@ grid.create = <T>(args: GridArgs<T>): Grid<T> => {
     }
   }
 
-  R.forEach(function(tuple) {
+  forEach(function(tuple) {
     var position = tuple.position;
     var value = tuple.value;
     g[position.x][position.y][position.z] = value;
   }, values);
   return g;
-};
+}
 
 grid.set = <T>(
   emptyCell: T,
@@ -72,8 +82,8 @@ grid.set = <T>(
   }
   const cells = grid.flatten(emptyCell, g);
   // TODO: Handle out of bounds
-  const removed = R.filter(({position, value}) => p != position, cells);
-  const added = R.append({position: p, value: v}, removed);
+  const removed = filter(({position, value}) => p != position, cells);
+  const added = append({position: p, value: v}, removed);
   return grid.create({
     size: grid.getSize(g),
     values: added,
@@ -233,16 +243,14 @@ grid.merge = <T>(
   finalGrid: Grid<T>,
   currentGrid: Grid<T>
 ): Grid<T> => {
-  // it appears lodash doesn't work with the new iterator...
-  //const voxels = _.map(grid.getIterator(finalGrid), ({position, voxel}) => {
-  var values = R.map(function(cell) {
-    var position = cell.position;
-    var value = cell.value;
+  const values = map(function(cell) {
+    const position = cell.position
+    const value = cell.value
     const currentValue = grid.get(emptyCell, currentGrid, position);
     const newValue = currentValue === emptyCell ? value : currentValue
     return {position: position, value: newValue};
   }, grid.flatten(emptyCell, finalGrid));
-  var newGrid = grid.create({
+  const newGrid = grid.create({
     size: grid.getSize(finalGrid),
     values: values,
     fillEmptyWith: emptyCell,
@@ -254,29 +262,31 @@ grid.blit = <T>(
   emptyCell: T,
   target: Grid<T>,
   offset: Vector3,
-  source: Grid<T>
+  source: Grid<T>,
 ): Grid<T> => {
-  const newValues = R.map((cell) => {
+  const originalValues = grid.flatten(emptyCell, target)
+  const sourceValues = map((cell) => {
     const offsetCellPosition = vector.plus(cell.position, offset)
     const newCell = { value: cell.value, position: offsetCellPosition }
     return newCell
-  }, grid.flatten(emptyCell, source))
-  const values = grid.flatten(emptyCell, source)
-  const presentNewValues = R.filter((a) => a.value !== emptyCell, newValues)
-  R.forEach(({ position, value }) => {
-    const t = R.find((gridVal) => gridVal.position == position, values)
-    if(t) {
-      t.value = value
+  }, filter(c => {
+    return c.value != emptyCell
+  }, grid.flatten(emptyCell, source)))
+
+  const combinedValues = reduce((acc, cell) => {
+    const i = findIndex(c => c.position == cell.position, acc)
+    if(i > -1) {
+      return update(i, cell, acc)
+    } else {
+      return append(cell, acc)
     }
-    else {
-      values.push({ position, value })
-    }
-  }, presentNewValues)
+  }, originalValues, sourceValues)
 
   const newGrid = grid.create({
     size: grid.getSize(target),
     fillEmptyWith: emptyCell,
-    values,
+    // values,
+    values: combinedValues,
   })
   return newGrid
 }
