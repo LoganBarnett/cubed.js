@@ -6,7 +6,6 @@ export { default as mesh } from './src/mesh.js'
 export { default as grid } from './src/grid.js'
 export { default as voxel } from './src/voxel.js'
 export { default as voxelType } from './src/voxelType.js'
-export { default as default } from './src/cubed.js'
 
 export type { Vector3, Vector2 } from './src/vector.js'
 export type { Voxel } from './src/voxel.js'
