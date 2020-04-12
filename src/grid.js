@@ -66,7 +66,11 @@ grid.create = <T>(args: GridArgs<T>): Grid<T> => {
   forEach(function(tuple) {
     var position = tuple.position;
     var value = tuple.value;
-    g[position.x][position.y][position.z] = value;
+    try {
+      g[position.x][position.y][position.z] = value;
+    } catch(e) {
+      throw new Error(`Position ${JSON.stringify(position)} is not valid for ${JSON.stringify(grid.getSize(g))}`)
+    }
   }, values);
   return g;
 }
