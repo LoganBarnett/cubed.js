@@ -9,23 +9,20 @@
   "scripts": {
     "flow": "flow",
     "flow-coverage": "flow coverage --color",
-    "lint": "eslint .",
     "test": "jasmine JASMINE_CONFIG_PATH=jasmine.json"
   },
   "devDependencies": {
-    "@babel/cli": "7.0.0-beta.46",
-    "@babel/core": "7.0.0-beta.46",
-    "@babel/plugin-transform-runtime": "7.0.0-beta.46",
-    "@babel/preset-env": "7.0.0-beta.46",
-    "@babel/preset-flow": "7.0.0-beta.46",
-    "babel-eslint": "8.2.1",
-    "eslint": "^3.5.0",
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.9.0",
+    "@babel/plugin-transform-runtime": "7.9.0",
+    "@babel/preset-env": "7.9.5",
+    "@babel/preset-flow": "7.9.0",
     "flow-bin": "0.71.0",
     "flow-typed": "2.4.0",
     "jasmine-es6": "0.0.18"
   },
   "dependencies": {
-    "@babel/runtime": "7.0.0-beta.46",
+    "@babel/runtime": "7.9.2",
     "ramda": "0.25.0"
   }
 }
