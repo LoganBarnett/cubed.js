@@ -6,14 +6,23 @@
   "repository": "git@github.com:LoganBarnett/cubed.js.git",
   "main": "dist/index.js",
   "description": "A Javascript voxel library",
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "index.js.flow"
+  ],
   "scripts": {
+    "prepare": "babel src -d dist",
     "flow": "flow",
     "flow-coverage": "flow coverage --color"
   },
   "devDependencies": {
-    "@babel/cli": "7.8.4",
-    "@babel/core": "7.9.0",
-    "@babel/preset-flow": "7.9.0",
+    "@babel/cli": "7.17.6",
+    "@babel/core": "7.17.8",
+    "@babel/plugin-transform-runtime": "7.17.0",
+    "@babel/preset-env": "7.16.11",
+    "@babel/preset-flow": "7.16.7",
+    "@babel/runtime": "7.17.8",
     "flow-bin": "0.123.0",
     "flow-typed": "3.1.0"
   },
